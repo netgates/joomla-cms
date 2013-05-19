@@ -41,7 +41,7 @@ function iFrameHeight()
 	width="<?php echo $this->escape($this->params->get('width')); ?>"
 	height="<?php echo $this->escape($this->params->get('height')); ?>"
 	scrolling="<?php echo $this->escape($this->params->get('scrolling')); ?>"
-	frameborder="<?php echo $this->escape($this->params->get('frameborder', 1)); ?>"
+	style="border-width:<?php echo (int) $this->escape($this->params->get('frameborder', 1)); ?>px"
 	class="wrapper<?php echo $this->pageclass_sfx; ?>">
 	<?php echo JText::_('COM_WRAPPER_NO_IFRAMES'); ?>
 </iframe>
