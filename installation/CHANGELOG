@@ -25,6 +25,18 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+19-May-2013 Michael Babker
+ # [#30771] Extension Manager Check Database doesn't handle SQL queries with leading comments.  Thanks Mark Dexter
+ #$ [#30867] More ':' than we need at Mass Mail.  Thanks Jean-Marie Simonet
+ # [#30880] Article Count at beez3.  Thanks David Hurley
+ ^ [#30819] Removes unnecessary clearfix divs.  Thanks Seth Warburton
+ # [#30754] Wrong display of the Debug Console (404 Error).  Thanks Brian Teeman
+ ^ [#30658] Adds WAI-ARIA Landmark Roles to Protostar.  Thanks Seth Warburton
+ ^ [#30918] Code duplication removal for saveOrderAjax.  Thanks Elin Waring
+ # [#30814] Undefind line at isis cpanel.  Thanks Tobias Zulauf
+ # [#30932] Missing variable in gmail authentication.  Thanks Janich Rasmussen
+ ^ [#30777] Removes html elements used in the wrong context.  Thanks Seth Warburton
+
 13-May-2013 Jean-Marie Simonet
  $ Updating ko-KR installation language
  #$ [#30740] Site name tooltip not translatable correctly
