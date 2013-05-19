@@ -33,7 +33,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<?php endif; ?>
 
 	<?php if (count($this->items)) : ?>
-	<table class="adminlist" cellspacing="1">
+	<table class="adminlist" style="border-collapse: separate;border-spacing: 1px;">
 		<thead>
 			<tr>
 				<th class="checkmark-col"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
