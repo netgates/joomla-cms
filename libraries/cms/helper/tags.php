@@ -216,6 +216,13 @@ class JHelperTags
 
 						// Make this item a child of the root tag
 						$tagTable->setLocation($tagTable->getRootId(), 'last-child');
+						
+						$tagTable->params = '{}';
+						$tagTable->metadesc = '';
+						$tagTable->metakey = '';
+						$tagTable->metadata = '';
+						$tagTable->images = '';
+						$tagTable->urls = '';
 
 						// Try to store tag
 						if ($tagTable->check())

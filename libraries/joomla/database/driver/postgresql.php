@@ -115,7 +115,7 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 		$dsn = "host={$this->options['host']} dbname={$this->options['database']} user={$this->options['user']} password={$this->options['password']}";
 
 		// Attempt to connect to the server.
-		if (!($this->connection = @pg_connect($dsn)))
+		if (!($this->connection = pg_connect($dsn)))
 		{
 			throw new RuntimeException('Error connecting to PGSQL database.');
 		}
@@ -381,28 +381,40 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 
 		foreach ($fields as $field)
 		{
-
+				
+			// Change Postgresql's NULL::* type with PHP's null one
 			if (preg_match("/^NULL::*/", $field->Default))
 			{
-
-				// Change Postgresql's NULL::* type with PHP's null one
 				$field->Default = null;
+			}
+				
+			// Change Postgresql's null date with PHP's null one
+			elseif (preg_match("/^timestamp*/", $field->type)) {
 
-			} else if (preg_match("/^timestamp*/", $field->type)) {
-
-				// Change Postgresql's null date with PHP's null one
 				if ($field->Default == "'1970-01-01 00:00:00'::".$field->type) {
-					$field->Default = '0000-00-00 00:00:00';
+					//$field->Default = '0000-00-00 00:00:00';
+					$field->Default = '1970-01-01 00:00:00';
 				}
-			} else if (preg_match("/^character varying*/", $field->type)) {
+			}
+				
+			// Change Postgresql's empty string with PHP's empty one
+			elseif (preg_match("/^character varying*/", $field->type)) {
 
-				// Change Postgresql's empty string with PHP's empty one
 				if (preg_match("/^''::character varying/", $field->Default)) {
 					$field->Default = '';
 				}
-			} else if ($field->type == 'int' || $field->type == 'bigint') {
+			}
+				
+			// Change Postgresql's empty text with PHP's empty one
+			elseif ($field->type == 'text') {
+					
+				if ($field->Default == "''::text") {
+					$field->Default = '';
+				}
+			}
 
-				// Change Postgresql's integers with PHP's integers
+			// Change Postgresql's integers with PHP's integers
+			elseif (in_array($field->type, array('int', 'bigint', 'integer'))) {
 				$field->Default = (int) $field->Default;
 			}
 		}
@@ -657,46 +669,20 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 		$this->errorMsg = '';
 
 		// Execute the query. Error suppression is used here to prevent warnings/notices that the connection has been lost.
+
 		$this->cursor = @pg_query($this->connection, $query);
 
 		// If an error occurred handle it.
 		if (!$this->cursor)
 		{
-			// Check if the server was disconnected.
-			if (!$this->connected())
-			{
-				try
-				{
-					// Attempt to reconnect.
-					$this->connection = null;
-					$this->connect();
-				}
-				// If connect fails, ignore that exception and throw the normal exception.
-				catch (RuntimeException $e)
-				{
-					// Get the error number and message.
-					$this->errorNum = (int) pg_result_error_field($this->cursor, PGSQL_DIAG_SQLSTATE) . ' ';
-					$this->errorMsg = JText::_('JLIB_DATABASE_QUERY_FAILED') . "\n" . pg_last_error($this->connection) . "\nSQL=" . $query;
+			// I didn't find how to get to error number, pg_last_error_field dosn't return anything
+			$this->errorNum = '#';
+			$this->errorMsg = JText::_('JLIB_DATABASE_QUERY_FAILED') . "\n" . pg_last_error($this->connection) . "\nSQL=" . $query;
 
-					// Throw the normal query exception.
-					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'databasequery');
-					throw new RuntimeException($this->errorMsg);
-				}
-
-				// Since we were able to reconnect, run the query again.
-				return $this->execute();
-			}
-			// The server was not disconnected.
-			else
-			{
-				// Get the error number and message.
-				$this->errorNum = (int) pg_result_error_field($this->cursor, PGSQL_DIAG_SQLSTATE) . ' ';
-				$this->errorMsg = JText::_('JLIB_DATABASE_QUERY_FAILED') . "\n" . pg_last_error($this->connection) . "\nSQL=" . $query;
-
-				// Throw the normal query exception.
-				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'databasequery');
-				throw new RuntimeException($this->errorMsg);
-			}
+			JFactory::getApplication()->enqueueMessage($this->errorMsg.' trace: ', 'error');
+			// Throw the normal query exception.
+			JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'databasequery');
+			throw new RuntimeException($this->errorMsg);
 		}
 
 		return $this->cursor;

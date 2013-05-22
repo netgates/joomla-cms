@@ -129,7 +129,7 @@ class JHelperContent
 
 		foreach ($fields as &$field)
 		{
-			$columnName = $field->Field;
+			$columnName = $field->column_name;
 			$value = $table->$columnName;
 			$data[$columnName] = $value;
 		}
