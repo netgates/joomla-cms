@@ -46,7 +46,7 @@ function modChrome_html5($module, &$params, &$attribs)
  */
 function modChrome_table($module, &$params, &$attribs)
 { ?>
-	<table cellpadding="0" cellspacing="0" class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+	<table style="padding: 0;border-collapse: collapse;" class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
 	<?php if ((bool) $module->showtitle) : ?>
 		<tr>
 			<th>
@@ -68,7 +68,7 @@ function modChrome_table($module, &$params, &$attribs)
  */
 function modChrome_horz($module, &$params, &$attribs)
 { ?>
-	<table cellspacing="1" cellpadding="0" width="100%">
+	<table style="padding: 0;border-collapse: separate;border-spacing: 1px;width:100%">
 		<tr>
 			<td>
 				<?php modChrome_table($module, $params, $attribs); ?>

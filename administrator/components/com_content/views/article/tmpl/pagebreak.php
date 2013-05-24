@@ -30,8 +30,8 @@ $script .= '}'."\n";
 JFactory::getDocument()->addScriptDeclaration($script);
 ?>
 		<form>
-		<table width="100%" align="center">
-			<tr width="40%">
+		<table style="width:100%;text-align:center">
+			<tr style="width:40%">
 				<td class="key" align="right">
 					<label for="title">
 						<?php echo JText::_('COM_CONTENT_PAGEBREAK_TITLE'); ?>
@@ -41,7 +41,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 					<input type="text" id="title" name="title" />
 				</td>
 			</tr>
-			<tr width="60%">
+			<tr style="width:60%">
 				<td class="key" align="right">
 					<label for="alias">
 						<?php echo JText::_('COM_CONTENT_PAGEBREAK_TOC'); ?>

@@ -129,7 +129,9 @@ class JFormFieldTag extends JFormFieldList
 			// Only item assigned values
 			$values = (array) $this->value;
 			JArrayHelper::toInteger($values);
-			$query->where('a.id IN (' . implode(',', $values) . ')');
+			
+			// Postgresql giving error with empty array : a.id IN () doesn't work with Postgresql
+			if(!empty($values)) $query->where('a.id IN (' . implode(',', $values) . ')');
 		}
 
 		// Filter language
