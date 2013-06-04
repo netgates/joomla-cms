@@ -273,8 +273,12 @@ class JTableCorecontent extends JTable
 		// Store the ucm_base row
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
+<<<<<<< HEAD
 		
 		$languageId = (int) JHelperContent::getLanguageId($this->core_language);
+=======
+		$languageId = JHelperContent::getLanguageId($this->core_language);
+>>>>>>> upstream/master
 
 		if ($isNew)
 		{
@@ -295,7 +299,11 @@ class JTableCorecontent extends JTable
 				->set($db->quoteName('ucm_language_id') . ' = ' . $db->quote($languageId))
 				->where($db->quoteName('ucm_id') . ' = ' . $db->quote($this->core_content_id));
 		}
+<<<<<<< HEAD
 			
+=======
+
+>>>>>>> upstream/master
 		$db->setQuery($query);
 
 		return $db->execute();
