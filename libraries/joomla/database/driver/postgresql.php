@@ -404,7 +404,7 @@ class JDatabaseDriverPostgresql extends JDatabaseDriver
 					$field->Default = '';
 				}
 			}
-				
+			
 			// Change Postgresql's empty text with PHP's empty one
 			elseif ($field->type == 'text') {
 					
